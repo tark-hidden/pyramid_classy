@@ -161,10 +161,10 @@ root of the web application::
     class IndexView(ClassyView):
         route_base = '/'
 
-        def index(self):
+        def index(self, request):
             ...
 
-        def get(self, id):
+        def get(self, request):
             ...
 
 
@@ -195,7 +195,7 @@ So let's say you add the following routes to one of your views::
 
         @route('/{id:\d+}')
         @route('/quote-{id:\d+}')
-        def get(self, id):
+        def get(self, request):
             ...
 
 That would end up generating the following 2 routes: /<id> and /quote-<id>
