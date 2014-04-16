@@ -1,5 +1,7 @@
 Pyramid-Classy
 ==============
+The PyPi package is not ready yet.
+
 I like Flask. Almost all of my project is just a chain of Flask + Flask-Classy + Flask-Admin.
 But now I have decided use Pyramid for just curious.
 
@@ -43,7 +45,7 @@ A standard way URL-Dispatch Pyramid
             self.request = request
 
         @view_config(route_name='index',
-                     renderer='app:/templates/mytemplate.pt')
+                     renderer='classy_test:/templates/mytemplate.pt')
         def index(self):
             return {'quotes': quotes}
 
@@ -259,7 +261,7 @@ This is really sad. What about this?
             return ...
 
         @route('/{pet_class}/{id:\d+}/hurpdurp', renderer='...')
-        def hurpdurp(self, request):  # /cats/232/owners
+        def hurpdurp(self, request):  # /cats/232/hurpdurp
             return ...
 
 You're welcome, bro.
