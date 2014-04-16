@@ -96,7 +96,6 @@ What do you think about this?
 
     from pyramid.config import Configurator
     from pyramid.response import Response
-    from pyramid.view import notfound_view_config
     from pyramid_classy import ClassyView, route
 
 
