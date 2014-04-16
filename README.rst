@@ -43,7 +43,7 @@ A standard way URL-Dispatch Pyramid
             self.request = request
 
         @view_config(route_name='index',
-                     renderer='classy_test:/templates/mytemplate.pt')
+                     renderer='app:/templates/mytemplate.pt')
         def index(self):
             return {'quotes': quotes}
 
