@@ -97,7 +97,7 @@ What do you think about this?
     from pyramid.config import Configurator
     from pyramid.response import Response
     from pyramid.view import notfound_view_config
-    from classy_test.pyramid_classy import ClassyView, route
+    from pyramid_classy import ClassyView, route
 
 
     quotes = [
@@ -109,7 +109,7 @@ What do you think about this?
 
 
     class IndexView(ClassyView):
-        @route('/', renderer='classy_test:/templates/mytemplate.pt')
+        @route('/', renderer='app:/templates/mytemplate.pt')
         def index(self, request):  # /
             return {'quotes': quotes}
 
@@ -238,7 +238,7 @@ This is really sad. What about this?
 
     class PetView(ClassyView):
         route_base = '/'
-        
+
         @route('/{pet_class}', renderer='...')
         def list(self, request):  # /cats or /dogs
             return ...
