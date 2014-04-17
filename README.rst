@@ -2,10 +2,10 @@ Pyramid-Classy
 ==============
 The PyPi package is not ready yet.
 
-I like Flask. Almost all of my project is just a chain of Flask + Flask-Classy + Flask-Admin.
-But now I have decided use Pyramid for just curious.
+I like Flask. Almost all of my projects are just a combination of Flask + Flask-Classy + Flask-Admin.
+But now I have decided to try my hand at Pyramid.
 
-Pyramid-Classy is an extension that adds class-based views to Pyramid for pretty common cases.
+Pyramid-Classy is an extension that allows implementing several generic cases easier.
 The main idea was taken from Flask-Classy written by Freedom Dumlao, god bless him.
 
 For example, `Pyramid-Classy` will automatically generate routes based on the methods
@@ -23,74 +23,8 @@ or::
 
     $ easy_install pyramid-classy
 
-A standard way URL-Dispatch Pyramid
------------------------------------
-
-::
-
-    import random
-    from pyramid.config import Configurator
-    from pyramid.response import Response
-    from pyramid.view import view_config
-
-    quotes = [
-        "First quote",
-        "Second quote",
-        "Third quote",
-        "Fourth quote",
-    ]
-
-    class IndexView(object):
-        def __init__(self, request):
-            self.request = request
-
-        @view_config(route_name='index',
-                     renderer='classy_test:/templates/mytemplate.pt')
-        def index(self):
-            return {'quotes': quotes}
-
-        @view_config(route_name='random')
-        def random(self):
-            return Response(random.choice(quotes))
-
-        @view_config(route_name='index.get')
-        def get(self):
-            quote_id = int(self.request.matchdict['id'])
-            quote = quotes[quote_id if 0 < quote_id < len(quotes) else 0]
-            return Response(quote)
-
-
-    class SecondView(object):
-        def __init__(self, request):
-            self.request = request
-
-        @view_config(route_name='second.index')
-        def index(self):
-            return Response('Second View index')
-
-        @view_config(route_name='second.random')
-        def random(self):
-            return Response(random.choice(quotes))
-
-
-    def main(global_config, **settings):
-        config = Configurator(settings=settings)
-
-        config.add_route('index', '/')
-        config.add_route('index.random', '/random')
-        config.add_route('index.get', '/{id:\d+}')
-        config.add_route('second.index', '/second/')
-        config.add_route('second.random', '/second/random')
-        config.scan()
-
-        return config.make_wsgi_app()
-
-
-Sure enough, it is an useless example, just for explanation. You need to define routes and views.
-It seems like Django + Bottle in one framework.
-
-What do you think about this?
------------------------------
+Let's see how it works
+----------------------
 
 ::
 
