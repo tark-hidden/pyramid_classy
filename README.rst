@@ -2,11 +2,11 @@ Pyramid-Classy
 ==============
 The PyPi package is not ready yet.
 
-I like Flask. Almost all of my projects are just a combination of Flask + Flask-Classy + Flask-Admin.
+I like Flask. Almost all of my projects are just a combination of Flask, Flask-Classy and Flask-Admin.
 But now I have decided to try my hand at Pyramid.
 
 Pyramid-Classy is an extension that allows implementing several generic cases easier.
-The main idea was taken from Flask-Classy written by Freedom Dumlao, god bless him.
+The main idea was taken from the Flask-Classy written by Freedom Dumlao, god bless him.
 
 For example, `Pyramid-Classy` will automatically generate routes based on the methods
 in your views, and makes it super simple to override those routes
