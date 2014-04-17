@@ -5,7 +5,7 @@ The PyPi package is not ready yet.
 I like Flask. Almost all of my projects are just a combination of Flask, Flask-Classy and Flask-Admin.
 But now I have decided to try my hand at Pyramid.
 
-Pyramid-Classy is an extension that allows implementing several generic cases easier.
+Pyramid-Classy is an extension that allows implementing several commonly used features.
 The main idea was taken from the Flask-Classy written by Freedom Dumlao, god bless him.
 
 For example, `Pyramid-Classy` will automatically generate routes based on the methods
@@ -76,7 +76,7 @@ Let's see how it works
         return config.make_wsgi_app()
 
 
-What do you think? Amazing, isn't it?
+What do you think? Amazing, isn't it? Write less do more.
 
 
 Customizing the Route Base
