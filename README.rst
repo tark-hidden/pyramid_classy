@@ -155,7 +155,7 @@ so you should feel right at home adding custom routes to any views you create.
 Last words
 ----------
 
-Ah. I read the article http://me.veekun.com/blog/2011/07/14/pyramid-traversal-almost-useful/
+Ah. I have read the article http://me.veekun.com/blog/2011/07/14/pyramid-traversal-almost-useful/
 
 .. code-block:: python
 
@@ -177,7 +177,7 @@ This is really sad. What about this?
 
     class PetView(ClassyView):
         def _pet_class(self, request):
-            return request.path.split('/')[0]
+            return request.path.split('/')[1]
 
         @route('/', renderer='...')
         def list(self, request):  # /
