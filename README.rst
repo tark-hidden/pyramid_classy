@@ -26,7 +26,7 @@ or::
 Let's see how it works
 ----------------------
 
-::
+.. code-block:: python
 
     import random
 
@@ -90,7 +90,9 @@ Method 1:
 
 The first method simply requires you to set a `route_base` attribute on
 your `ClassyView`. Suppose we wanted to make our QuotesView handle the
-root of the web application::
+root of the web application
+
+.. code-block:: python
 
     class IndexView(ClassyView):
         route_base = '/'
@@ -122,7 +124,9 @@ Using multiple routes for a single view
 What happens when you need to apply more than one route to a specific view.
 But since you're so determined let's see how to do that anyway.
 
-So let's say you add the following routes to one of your views::
+So let's say you add the following routes to one of your views
+
+.. code-block:: python
 
     class IndexView(ClassyView):
         route_base = '/'
@@ -153,7 +157,7 @@ Last words
 
 Ah. I read the article http://me.veekun.com/blog/2011/07/14/pyramid-traversal-almost-useful/
 
-::
+.. code-block:: python
 
     config.add_route('cats.list', '/cats')
     config.add_route('cats.view', '/cats/{id:\d+}', pregenerator=make_cat_url)
@@ -169,33 +173,51 @@ Ah. I read the article http://me.veekun.com/blog/2011/07/14/pyramid-traversal-al
 
 This is really sad. What about this?
 
-::
+.. code-block:: python
 
     class PetView(ClassyView):
-        route_base = '/'
+        def _pet_class(self, request):
+            return request.path.split('/')[0]
 
-        @route('/{pet_class}', renderer='...')
-        def list(self, request):  # /cats or /dogs
+        @route('/', renderer='...')
+        def list(self, request):  # /
+            pet_class = self._pet_class(request)
             return ...
 
-        @route('/{pet_class}/{id:\d+}', renderer='...')
-        def view(self, request):  # /cats/232
+        @route('/{id:\d+}', renderer='...')
+        def view(self, request):  # /232
+            pet_class = self._pet_class(request)
             return ...
 
-        @route('/{pet_class}/{id:\d+}/owners', renderer='...')
-        def owners(self, request):  # /cats/232/owners
+        @route('/{id:\d+}/owners', renderer='...')
+        def owners(self, request):  # /232/owners
+            pet_class = self._pet_class(request)
             return ...
 
-        @route('/{pet_class}/{id:\d+}/shots', renderer='...')
-        def shots(self, request):  # /cats/232/shots
+        @route('/{id:\d+}/shots', renderer='...')
+        def shots(self, request):  # /232/shots
+            pet_class = self._pet_class(request)
             return ...
 
-        @route('/{pet_class}/{id:\d+}/youtubes', renderer='...')
-        def youtubes(self, request):  # /cats/232/youtubes
+        @route('/{id:\d+}/youtubes', renderer='...')
+        def youtubes(self, request):  # /232/youtubes
+            pet_class = self._pet_class(request)
             return ...
 
-        @route('/{pet_class}/{id:\d+}/hurpdurp', renderer='...')
-        def hurpdurp(self, request):  # /cats/232/hurpdurp
+        @route('/{id:\d+}/hurpdurp', renderer='...')
+        def hurpdurp(self, request):  # /232/hurpdurp
+            pet_class = self._pet_class(request)
             return ...
+
+    ...
+
+    def main(global_config, **settings):
+        config = Configurator(settings=settings)
+
+        PetView.register(config, '/cats')
+        PetView.register(config, '/gods')
+
+        return config.make_wsgi_app()
+
 
 You're welcome, bro.
