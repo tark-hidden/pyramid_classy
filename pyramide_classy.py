@@ -32,7 +32,7 @@ class ClassyView(object):
         n = cls.__name__
         prefix = (n[:-4] if len(n) > 4 and n.endswith('View') else n).lower()
         if route_base and route_base != '/':
-            cls.route_base = '/%s' % route_base.lstrip('/')
+            cls.route_base = '/%s' % route_base.strip('/')
             prefix = '%s.%s' % (prefix, route_base.strip('/'))
         if cls.route_base == '/':
             cls.route_base = '' if prefix == 'index' else '/%s' % prefix
