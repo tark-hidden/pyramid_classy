@@ -1,6 +1,6 @@
 Pyramid-Classy
 ==============
-The PyPi package is not ready yet.
+Translation and bug fix in progress.
 
 I like Flask. Almost all of my projects are just a combination of Flask, Flask-Classy and Flask-Admin.
 But now I have decided to try my hand at Pyramid.
@@ -76,7 +76,7 @@ Let's see how it works
         return config.make_wsgi_app()
 
 
-What do you think? Amazing, isn't it? Write less do more.
+Amazing, isn't it? Write less do more.
 
 
 Customizing the Route Base
@@ -144,10 +144,10 @@ Special names
 -------------
 
 Classnames IndexView or Index will always use / as route_base.
-..Method named index(self, request) will always use /<class_name>/ for route_path.
+Method named index(self, request) will always use /<class_name>/ for route_path.
 
 Classnames will always use /<class_name>/ as route_base if you don't define route_base in class.
-..Methods without decorators will use /<class_name>/<method_name> for route_path.
+Methods without decorators will use /<class_name>/<method_name> for route_path.
 
 The route decorator takes exactly the same parameters as Pyramid's add_router,
 so you should feel right at home adding custom routes to any views you create.
@@ -215,7 +215,7 @@ This is really sad. What about this?
         config = Configurator(settings=settings)
 
         PetView.register(config, '/cats')
-        PetView.register(config, '/gods')
+        PetView.register(config, '/dogs')
 
         return config.make_wsgi_app()
 
