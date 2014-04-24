@@ -1,0 +1,18 @@
+Metadata-Version: 1.0
+Name: pyramid_classy
+Version: 0.1
+Summary: Pyramid-Classy is an extension that adds class-based views to Pyramid more simple.
+Home-page: https://github.com/tark-hidden/pyramid_classy
+Author: Tark
+Author-email: tark.hidden@gmail.com
+License: BSD
+Description: ========
+        Overview
+        ========
+        
+Keywords: web pyramid classy
+Platform: UNKNOWN
+Classifier: Intended Audience :: Developers
+Classifier: Framework :: Pyramid
+Classifier: Programming Language :: Python
+Classifier: License :: OSI Approved :: BSD License
