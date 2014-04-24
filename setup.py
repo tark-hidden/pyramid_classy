@@ -2,16 +2,20 @@
 Pyramid-Classy
 -------------
 
-Class-based views for Pyramid
+Pyramid-Classy is an extension that adds class-based views to
+Pyramid more simple. Main idea was taken from the Flask-Classy written by
+Freedom Dumlao.
+
 """
 from setuptools import setup
 
 setup(
     name='Pyramid-Classy',
     version='0.1',
-    url='https://github.com/tark-hidden/pyramid-classy',
+    url='https://github.com/tark-hidden/pyramid_classy',
     license='BSD',
     author='Tark',
+    maintainer="Tark",
     author_email='tark.hidden@gmail.com',
     description='Class-based views for Pyramid',
     long_description=__doc__,
