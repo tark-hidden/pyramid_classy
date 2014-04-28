@@ -6,13 +6,35 @@ Home-page: https://github.com/tark-hidden/pyramid_classy
 Author: Tark
 Author-email: tark.hidden@gmail.com
 License: BSD
-Description: ========
-        Overview
-        ========
+Description: 
+        Documentation: https://github.com/tark-hidden/pyramid_classy
+
+        Changelog
+        =========
+        
+        0.2
+        ---
+        
+        * Cleaned up code. 
+        * Now functions in classes accepts only one argument: self. Request variable now is self.request.
+
+
+        0.1
+        ---
+
+        Initial release.
+
         
 Keywords: web pyramid classy
-Platform: UNKNOWN
+Platform: any
 Classifier: Intended Audience :: Developers
 Classifier: Framework :: Pyramid
 Classifier: Programming Language :: Python
 Classifier: License :: OSI Approved :: BSD License
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.6
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.3
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
