@@ -8,9 +8,8 @@ But now I have decided to try my hand at Pyramid.
 Pyramid-Classy is an extension that allows implementing several commonly used features.
 The main idea was taken from the Flask-Classy written by Freedom Dumlao, god bless him.
 
-For example, `Pyramid-Classy` will automatically generate routes based on the methods
-in your views, and makes it super simple to override those routes
-using Pyramid's familiar decorator syntax.
+For example, Pyramid-Classy will automatically generate routes based on the methods in your views,
+at the same time providing a simple way to override those routes using Pyramid's familiar decorator
 
 Installation
 ------------
@@ -45,25 +44,25 @@ Let's see how it works
 
     class IndexView(ClassyView):
         @route('/', renderer='app:/templates/mytemplate.pt')
-        def index(self, request):  # /
+        def index(self):  # /
             return {'quotes': quotes}
 
-        def random(self, request):  # /random
+        def random(self):  # /random
             return Response(random.choice(quotes))
 
         @route('/{id:\d+}')
         @route('/quote-{id:\d+}')
-        def get(self, request):  # /1 and /quote-1
-            quote_id = int(request.matchdict['id'])
+        def get(self):  # /1 and /quote-1
+            quote_id = int(self.request.matchdict['id'])
             quote = quotes[quote_id if 0 < quote_id < len(quotes) else 0]
             return Response(quote)
 
 
     class SecondView(ClassyView):
-        def index(self, request):  # /second/
+        def index(self):  # /second/
             return Response('Second View index')
 
-        def random(self, request):  # /second/random
+        def random(self):  # /second/random
             return Response(random.choice(quotes))
 
 
@@ -76,14 +75,14 @@ Let's see how it works
         return config.make_wsgi_app()
 
 
-Amazing, isn't it? Write less do more.
+Amazing, isn't it? Write less, do more.
 
 
 Customizing the Route Base
 --------------------------
-There are 2 ways to customize the base route of a `ClassyView`. (Well
-technically there are 3 if you count changing the name of the class
-but that's hardly a reasonable way to go about it.)
+There are two ways to customize the base route of a `ClassyView`. Well,
+technically there are three if you count changing the name of the class
+but that's hardly a reasonable way to go about it.
 
 Method 1:
 *********
@@ -97,10 +96,10 @@ root of the web application
     class IndexView(ClassyView):
         route_base = '/'
 
-        def index(self, request):
+        def index(self):
             ...
 
-        def get(self, request):
+        def get(self):
             ...
 
 
@@ -133,7 +132,7 @@ So let's say you add the following routes to one of your views
 
         @route('/{id:\d+}')
         @route('/quote-{id:\d+}')
-        def get(self, request):
+        def get(self):
             ...
 
 That would end up generating the following 2 routes: /<id> and /quote-<id>
@@ -149,8 +148,8 @@ Method named index(self, request) will always use /<class_name>/ for route_path.
 Classnames will always use /<class_name>/ as route_base if you don't define route_base in class.
 Methods without decorators will use /<class_name>/<method_name> for route_path.
 
-The route decorator takes exactly the same parameters as Pyramid's add_router,
-so you should feel right at home adding custom routes to any views you create.
+The route decorator takes exactly the same parameters as Pyramid's add_route,
+so you should feel free adding custom routes to any views you create.
 
 Last words
 ----------
@@ -176,37 +175,38 @@ This is really sad. What about this?
 .. code-block:: python
 
     class PetView(ClassyView):
-        def _pet_class(self, request):
-            return request.path.split('/')[1]
+        def __init__(self, request):
+            super(PetView, self).__init__(request)
+            self.pet_class = request.path.split('/')[1]
 
         @route('/', renderer='...')
-        def list(self, request):  # /
-            pet_class = self._pet_class(request)
+        def list(self):  # /
+            pet_class = self.pet_class
             return ...
 
         @route('/{id:\d+}', renderer='...')
-        def view(self, request):  # /232
-            pet_class = self._pet_class(request)
+        def view(self):  # /232
+            pet_class = self.pet_class
             return ...
 
         @route('/{id:\d+}/owners', renderer='...')
-        def owners(self, request):  # /232/owners
-            pet_class = self._pet_class(request)
+        def owners(self):  # /232/owners
+            pet_class = self.pet_class
             return ...
 
         @route('/{id:\d+}/shots', renderer='...')
-        def shots(self, request):  # /232/shots
-            pet_class = self._pet_class(request)
+        def shots(self):  # /232/shots
+            pet_class = self.pet_class
             return ...
 
         @route('/{id:\d+}/youtubes', renderer='...')
-        def youtubes(self, request):  # /232/youtubes
-            pet_class = self._pet_class(request)
+        def youtubes(self):  # /232/youtubes
+            pet_class = self.pet_class
             return ...
 
         @route('/{id:\d+}/hurpdurp', renderer='...')
-        def hurpdurp(self, request):  # /232/hurpdurp
-            pet_class = self._pet_class(request)
+        def hurpdurp(self):  # /232/hurpdurp
+            pet_class = self.pet_class
             return ...
 
     ...
@@ -221,3 +221,18 @@ This is really sad. What about this?
 
 
 You're welcome, bro.
+
+Changelog
+*********
+
+0.2
+~~~
+
+* Cleaned up code.
+* Now functions in classes accepts only one argument: self. Request variable now is self.request.
+
+
+0.1
+~~~
+
+Initial release.
