@@ -25,7 +25,10 @@ def get_members(base, current):
 
 class ClassyView(object):
     route_base = '/'
-    decorators = []
+
+    def __init__(self, request, context=None):
+        self.request = request
+        self.context = context
 
     @classmethod
     def register(cls, config, route_base=None):
@@ -38,7 +41,6 @@ class ClassyView(object):
             cls.route_base = '' if prefix == 'index' else '/%s' % prefix
 
         for name, _ in get_members(ClassyView, cls):
-            function = cls.make_proxy_method(name)
             if hasattr(getattr(cls, name), 'rules'):
                 rules = getattr(cls, name).rules
                 for idx, rule in enumerate(rules):
@@ -52,22 +54,16 @@ class ClassyView(object):
                         route_name = '%s_%d' % (route_name, idx)
 
                     config.add_route(route_name, url)
-                    config.add_view(function, route_name=route_name, **options)
+                    config.add_view(cls, attr=name,
+                                    route_name=route_name, **options)
             else:  # no decorators
                 url = cls.build_url(name, name)
                 route_name = '%s.%s' % (prefix, name)
                 config.add_route(route_name, url)
-                config.add_view(function, route_name=route_name)
+                config.add_view(cls, attr=name, route_name=route_name)
 
     @classmethod
     def build_url(cls, name, url=''):
         if name == 'index':
             url = ''
         return '%s/%s' % (cls.route_base, url.lstrip('/'))
-
-    @classmethod
-    def make_proxy_method(cls, name):
-        view = getattr(cls(), name)
-        for decorator in cls.decorators:
-            view = decorator(view)
-        return view
