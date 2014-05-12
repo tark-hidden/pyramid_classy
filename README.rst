@@ -28,7 +28,6 @@ Let's see how it works
 .. code-block:: python
 
     import random
-
     from pyramid.config import Configurator
     from pyramid.response import Response
     from pyramid_classy import ClassyView, route
@@ -41,21 +40,21 @@ Let's see how it works
         "Fourth quote",
     ]
 
-
+    @view_defaults(renderer='classy_test:/templates/single.pt')
     class IndexView(ClassyView):
-        @route('/', renderer='app:/templates/mytemplate.pt')
-        def index(self):  # /
-            return {'quotes': quotes}
+        @route('/')
+        def index(self, renderer='classy_test:/templates/index.pt'):  # /
+            return dict(quotes=quotes)
 
         def random(self):  # /random
-            return Response(random.choice(quotes))
+            return dict(quote=random.choice(quotes))
 
         @route('/{id:\d+}')
         @route('/quote-{id:\d+}')
         def get(self):  # /1 and /quote-1
             quote_id = int(self.request.matchdict['id'])
             quote = quotes[quote_id if 0 < quote_id < len(quotes) else 0]
-            return Response(quote)
+            return dict(quote=quote)
 
 
     class SecondView(ClassyView):
@@ -69,7 +68,7 @@ Let's see how it works
     def main(global_config, **settings):
         config = Configurator(settings=settings)
 
-        IndexView.register(config)
+        IndexView.register(config, debug=True)
         SecondView.register(config)
 
         return config.make_wsgi_app()
@@ -151,6 +150,8 @@ Methods without decorators will use /<class_name>/<method_name> for route_path.
 The route decorator takes exactly the same parameters as Pyramid's add_route,
 so you should feel free adding custom routes to any views you create.
 
+You can define debug flag (same way as route_base) to see routes and endpoints.
+
 Last words
 ----------
 
@@ -224,6 +225,14 @@ You're welcome, bro.
 
 Changelog
 *********
+
+0.3
+---
+
+* Fixed a terrible bug, that doesn't allow to define a few routes for the root.
+* Added debug flag. Now you can see routes and their names if you want.
+* Added @view_defaults support. It's weird, but it didn't work.
+
 
 0.2
 ~~~
