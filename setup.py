@@ -9,7 +9,15 @@ Freedom Dumlao.
 Documentation: https://github.com/tark-hidden/pyramid_classy
 
 Changelog
-=========
+*********
+
+0.3
+---
+
+* Fixed a terrible bug, that doesn't allow to define a few routes for the root.
+* Added debug flag. Now you can see routes and their names if you want.
+* Added @view_defaults support. It's weird, but it didn't work properly.
+
         
 0.2
 ---
@@ -28,7 +36,7 @@ from setuptools import setup
 
 setup(
     name='Pyramid-Classy',
-    version='0.2',
+    version='0.3',
     url='https://github.com/tark-hidden/pyramid_classy',
     license='BSD',
     author='Tark',
