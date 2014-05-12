@@ -14,13 +14,13 @@ at the same time providing a simple way to override those routes using Pyramid's
 Installation
 ------------
 
-Install the extension with::
+Install the extension with ::
 
-    $ pip install pyramid-classy
+$ pip install pyramid-classy
 
-or::
+or ::
 
-    $ easy_install pyramid-classy
+$ easy_install pyramid-classy
 
 Let's see how it works
 ----------------------
@@ -119,10 +119,7 @@ one, and override it with method two if needed.
 Using multiple routes for a single view
 ---------------------------------------
 
-What happens when you need to apply more than one route to a specific view.
-But since you're so determined let's see how to do that anyway.
-
-So let's say you add the following routes to one of your views
+Sometimes you need to apply more than one route to a specific view...
 
 .. code-block:: python
 
@@ -227,11 +224,11 @@ Changelog
 *********
 
 0.3
----
+~~~
 
 * Fixed a terrible bug, that doesn't allow to define a few routes for the root.
 * Added debug flag. Now you can see routes and their names if you want.
-* Added @view_defaults support. It's weird, but it didn't work.
+* Added @view_defaults support. It's weird, but it didn't work properly.
 
 
 0.2
