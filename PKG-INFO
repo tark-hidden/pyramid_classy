@@ -1,36 +1,51 @@
-Metadata-Version: 1.0
-Name: pyramid_classy
-Version: 0.1
-Summary: Pyramid-Classy is an extension that adds class-based views to Pyramid more simple.
+Metadata-Version: 1.1
+Name: Pyramid-Classy
+Version: 0.3
+Summary: Class-based views for Pyramid
 Home-page: https://github.com/tark-hidden/pyramid_classy
 Author: Tark
 Author-email: tark.hidden@gmail.com
 License: BSD
 Description: 
-        Documentation: https://github.com/tark-hidden/pyramid_classy
-
-        Changelog
-        =========
+        Pyramid-Classy
+        --------------
         
+        Pyramid-Classy is an extension that adds class-based views to
+        Pyramid more simple. Main idea was taken from the Flask-Classy written by
+        Freedom Dumlao.
+        
+        Documentation: https://github.com/tark-hidden/pyramid_classy
+        
+        Changelog
+        *********
+        
+        0.3
+        ---
+        
+        * Fixed a terrible bug, that doesn't allow to define a few routes for the root.
+        * Added debug flag. Now you can see routes and their names if you want.
+        * Added @view_defaults support. It's weird, but it didn't work properly.
+        
+                
         0.2
         ---
-        
+                
         * Cleaned up code. 
         * Now functions in classes accepts only one argument: self. Request variable now is self.request.
-
-
+        
+        
         0.1
         ---
-
-        Initial release.
-
         
-Keywords: web pyramid classy
+        Initial release.
+        
+        
 Platform: any
+Classifier: Environment :: Web Environment
 Classifier: Intended Audience :: Developers
-Classifier: Framework :: Pyramid
-Classifier: Programming Language :: Python
 Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
 Classifier: Programming Language :: Python :: 2
 Classifier: Programming Language :: Python :: 2.6
 Classifier: Programming Language :: Python :: 2.7
