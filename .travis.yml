@@ -3,4 +3,4 @@ python:
   - "2.7"
   - "3.3"
 
-install: "pip install -r travis.txt --use-mirrors"
+install: "pip install -r travis.txt"
