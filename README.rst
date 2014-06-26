@@ -151,20 +151,25 @@ You can define debug flag (same way as route_base) to see routes and endpoints.
 
 All the functions with name starting with letter and defined in class ClassyView will 
 serve a specified URL even without route decorator.
+
 .. code-block:: python
+
     class IndexView(ClassyView):
         debug = True
         
-        def get_some_info(self):  # /get_some_info (!) -> error 502 due answer is not Response object.
+        def get_some_info(self):  # /get_some_info (!) -> 502 (Server Error)
             return something
 
 For avoiding this you need define a function with name starting with underscore '_'
+
 .. code-block:: python
+
     class IndexView(ClassyView):
         debug = True
         
         def _get_some_info(self):  # /_get_some_info (!) -> 404 (Not Found)
             return something
+
 
 Last words
 ----------
