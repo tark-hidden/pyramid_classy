@@ -160,7 +160,7 @@ serve a specified URL even without route decorator.
         def get_some_info(self):  # /get_some_info (!) -> 502 (Server Error)
             return something
 
-For avoiding this you need define a function with name starting with underscore '_'
+For avoiding this you need to define a function with name starting with underscore _
 
 .. code-block:: python
 
