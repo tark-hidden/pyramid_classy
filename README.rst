@@ -135,8 +135,8 @@ That would end up generating the following 2 routes: /<id> and /quote-<id>
 route_name would be index.get_1 and index.get_0
 
 
-Special names
--------------
+Important notes
+---------------
 
 Classnames IndexView or Index will always use / as route_base.
 Method named index(self, request) will always use /<class_name>/ for route_path.
@@ -148,6 +148,23 @@ The route decorator takes exactly the same parameters as Pyramid's add_route,
 so you should feel free adding custom routes to any views you create.
 
 You can define debug flag (same way as route_base) to see routes and endpoints.
+
+All the functions with name starting with letter and defined in class ClassyView will 
+serve a specified URL even without route decorator.
+.. code-block:: python
+    class IndexView(ClassyView):
+        debug = True
+        
+        def get_some_info(self):  # /get_some_info (!) -> error 502 due answer is not Response object.
+            return something
+
+For avoiding this you need define a function with name starting with underscore '_'
+.. code-block:: python
+    class IndexView(ClassyView):
+        debug = True
+        
+        def _get_some_info(self):  # /_get_some_info (!) -> 404 (Not Found)
+            return something
 
 Last words
 ----------
