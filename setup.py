@@ -11,6 +11,12 @@ Documentation: https://github.com/tark-hidden/pyramid_classy
 Changelog
 *********
 
+0.4
+---
+* IndexView is very useful name, but... Now you can handle a root url with any class you want - with route_base = '/'.
+* Some wierd bugs has been fixed.
+
+
 0.3
 ---
 
@@ -36,7 +42,7 @@ from setuptools import setup
 
 setup(
     name='Pyramid-Classy',
-    version='0.3',
+    version='0.4',
     url='https://github.com/tark-hidden/pyramid_classy',
     license='BSD',
     author='Tark',
