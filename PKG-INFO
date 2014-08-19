@@ -1,6 +1,6 @@
 Metadata-Version: 1.1
 Name: Pyramid-Classy
-Version: 0.3
+Version: 0.4
 Summary: Class-based views for Pyramid
 Home-page: https://github.com/tark-hidden/pyramid_classy
 Author: Tark
@@ -18,6 +18,12 @@ Description:
         
         Changelog
         *********
+        
+        0.4
+        ---
+        * IndexView is very useful name, but... Now you can handle a root url with any class you want - with route_base = '/'.
+        * Some wierd bugs has been fixed.
+        
         
         0.3
         ---
