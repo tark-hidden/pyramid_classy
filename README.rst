@@ -14,13 +14,13 @@ at the same time providing a simple way to override those routes using Pyramid's
 Installation
 ------------
 
-Install the extension with ::
+Install the extension with::
 
-$ pip install pyramid-classy
+    $ pip install pyramid-classy
 
-or ::
+or::
 
-$ easy_install pyramid-classy
+    $ easy_install pyramid-classy
 
 Let's see how it works
 ----------------------
@@ -40,10 +40,10 @@ Let's see how it works
         "Fourth quote",
     ]
 
-    @view_defaults(renderer='classy_test:/templates/single.pt')
+    @view_defaults(renderer='project:/templates/single.pt')
     class IndexView(ClassyView):
         @route('/')
-        def index(self, renderer='classy_test:/templates/index.pt'):  # /
+        def index(self, renderer='project:/templates/index.pt'):  # /
             return dict(quotes=quotes)
 
         def random(self):  # /random
@@ -92,7 +92,7 @@ root of the web application
 
 .. code-block:: python
 
-    class IndexView(ClassyView):
+    class QuotesView(ClassyView):
         route_base = '/'
 
         def index(self):
@@ -110,7 +110,8 @@ you need to be able to specify different base routes for different apps.
 You can specify the route when you register the class with the Pyramid config
 instance::
 
-    IndexView.register(config, route_base='/')
+    QuotesView.register(config, route_base='/')
+
 
 The second method will always override the first, so you can use method
 one, and override it with method two if needed.
@@ -160,7 +161,8 @@ serve a specified URL even without route decorator.
         def get_some_info(self):  # /get_some_info (!) -> 502 (Server Error)
             return something
 
-For avoiding this you need to define a function with name starting with underscore _
+For avoiding this you need to define a function with name starting with underscore _.
+Sure enough, you cannot handle URLs with name starting with underscore. Sorry for that.
 
 .. code-block:: python
 
@@ -244,6 +246,13 @@ You're welcome, bro.
 
 Changelog
 *********
+
+0.4
+~~~
+
+* IndexView is very useful name, but... Now you can handle the root url with any class you want - with route_base = '/'.
+* Some weird bugs has been fixed.
+
 
 0.3
 ~~~
