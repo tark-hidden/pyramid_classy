@@ -24,7 +24,7 @@ def get_members(base, current):
 
 
 class ClassyView(object):
-    route_base = '/'
+    route_base = None
     debug = False
     __view_defaults__ = {}
 
@@ -36,11 +36,13 @@ class ClassyView(object):
     def register(cls, config, route_base=None, debug=False):
         n = cls.__name__
         prefix = (n[:-4] if len(n) > 4 and n.endswith('View') else n).lower()
-        if route_base and route_base != '/':
-            cls.route_base = '/%s' % route_base.strip('/')
+        if not route_base and not cls.route_base:
+            cls.route_base = '/' if prefix == 'index' else '/%s/' % prefix
+        elif route_base and route_base != '/':
+            cls.route_base = '/%s/' % route_base.strip('/')
             prefix = '%s.%s' % (prefix, route_base.strip('/'))
-        if cls.route_base == '/':
-            cls.route_base = '' if prefix == 'index' else '/%s' % prefix
+        else:
+            cls.route_base = '/'
         if debug:
             cls.debug = debug
 
@@ -51,7 +53,7 @@ class ClassyView(object):
                 rules = getattr(cls, name).rules
                 for idx, rule in enumerate(rules):
                     url, options = rule
-                    url = cls.build_url(name, url)
+                    url = cls.build_url(url)
                     route_name = options.pop('route_name', None)
                     view_defaults.update(options or {})
                     options = view_defaults
@@ -62,7 +64,7 @@ class ClassyView(object):
                         route_name = '%s_%d' % (route_name, idx)
                     routes.append((url, name, route_name, options))
             else:  # no decorators
-                url = cls.build_url(name, name)
+                url = cls.build_url(name)
                 route_name = '%s.%s' % (prefix, name)
                 options = view_defaults
                 routes.append((url, name, route_name, options))
@@ -72,11 +74,9 @@ class ClassyView(object):
             config.add_route(route_name, url)
             config.add_view(cls, attr=name, route_name=route_name, **options)
             if cls.debug:
-                print "%s%s '%s'" % (cls.route_base, url, route_name)
+                print "%s => '%s'" % (url, route_name)
 
 
     @classmethod
-    def build_url(cls, name, url=''):
-        if name == 'index' and name == url:
-            url = ''
-        return '%s/%s' % (cls.route_base, url.lstrip('/'))
+    def build_url(cls, url=''):
+        return '%s%s' % (cls.route_base, url.lstrip('/'))
