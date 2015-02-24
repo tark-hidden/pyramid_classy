@@ -74,7 +74,7 @@ class ClassyView(object):
             config.add_route(route_name, url)
             config.add_view(cls, attr=name, route_name=route_name, **options)
             if cls.debug:
-                print "%s => '%s'" % (url, route_name)
+                print("%s => '%s'" % (url, route_name))
 
 
     @classmethod
