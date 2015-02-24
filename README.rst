@@ -247,6 +247,12 @@ You're welcome, bro.
 Changelog
 *********
 
+0.4.2
+~~~~~
+
+* Py3 compatibility support.
+
+
 0.4
 ~~~
 
