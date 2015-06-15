@@ -4,6 +4,7 @@
     Pyramid more simple.
 """
 
+from pyramid.compat import PY3
 import inspect
 
 
@@ -18,7 +19,8 @@ def route(rule, **options):
 
 def get_members(base, current):
     base_members = dir(base)
-    all_members = inspect.getmembers(current, predicate=inspect.ismethod)
+    predicate = PY3 and inspect.isfunction or inspect.ismethod
+    all_members = inspect.getmembers(current, predicate=predicate)
     return [member for member in all_members
             if not member[0] in base_members and not member[0].startswith('_')]
 
@@ -75,7 +77,6 @@ class ClassyView(object):
             config.add_view(cls, attr=name, route_name=route_name, **options)
             if cls.debug:
                 print("%s => '%s'" % (url, route_name))
-
 
     @classmethod
     def build_url(cls, url=''):
