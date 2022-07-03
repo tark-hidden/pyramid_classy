@@ -1,6 +1,6 @@
 Metadata-Version: 1.1
 Name: Pyramid-Classy
-Version: 0.4
+Version: 0.4.4
 Summary: Class-based views for Pyramid
 Home-page: https://github.com/tark-hidden/pyramid_classy
 Author: Tark
@@ -11,18 +11,32 @@ Description:
         --------------
         
         Pyramid-Classy is an extension that adds class-based views to
-        Pyramid more simple. Main idea was taken from the Flask-Classy written by
-        Freedom Dumlao.
+        Pyramid more simple. Main idea was taken from the Flask-Classy
+        written by Freedom Dumlao.
         
         Documentation: https://github.com/tark-hidden/pyramid_classy
         
         Changelog
         *********
+
+        0.4.4
+        -----
+
+        * No more print if debug=True, now it depends on logging in a Pyramid config file.
+        * Fixed too long route_name if class view inherit other class.
+
+
+        0.4.1
+        -----
+        
+        * Py3 compatibility support.
+        
         
         0.4
         ---
+        
         * IndexView is very useful name, but... Now you can handle a root url with any class you want - with route_base = '/'.
-        * Some wierd bugs has been fixed.
+        * Some weird bugs were fixed.
         
         
         0.3
