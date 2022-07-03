@@ -11,6 +11,13 @@ Documentation: https://github.com/tark-hidden/pyramid_classy
 Changelog
 *********
 
+0.4.4
+-----
+
+* No more print if debug=True, now it depends on logging in a Pyramid config file.
+* Fixed too long route_name if class view inherit other class.
+
+
 0.4.2
 -----
 
@@ -47,9 +54,17 @@ Initial release.
 """
 from setuptools import setup
 
+
+requires = [
+    'pyramid',
+    'webtest',
+    'waitress'
+]
+
+
 setup(
-    name='Pyramid-Classy',
-    version='0.4.2',
+    name='pyramid-classy',
+    version='0.4.4',
     url='https://github.com/tark-hidden/pyramid_classy',
     license='BSD',
     author='Tark',
@@ -61,9 +76,9 @@ setup(
     zip_safe=False,
     include_package_data=True,
     platforms='any',
-    install_requires=[
-        'Pyramid'
-    ],
+    test_suite="tests",
+    tests_require=requires,
+    install_requires=requires,
     classifiers=[
         'Environment :: Web Environment',
         'Intended Audience :: Developers',
@@ -75,6 +90,8 @@ setup(
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.3',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
         'Topic :: Software Development :: Libraries :: Python Modules'
     ]    
