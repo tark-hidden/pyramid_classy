@@ -6,6 +6,7 @@
 
 from pyramid.compat import PY3
 import inspect
+import logging
 
 
 def route(rule, **options):
@@ -37,14 +38,17 @@ class ClassyView(object):
     @classmethod
     def register(cls, config, route_base=None, debug=False):
         n = cls.__name__
+        log = logging.getLogger(config.registry.package_name)
         prefix = (n[:-4] if len(n) > 4 and n.endswith('View') else n).lower()
+
         if not route_base and not cls.route_base:
             cls.route_base = '/' if prefix == 'index' else '/%s/' % prefix
         elif route_base and route_base != '/':
-            cls.route_base = '/%s/' % route_base.strip('/')
-            prefix = '%s.%s' % (prefix, route_base.strip('/'))
-        else:
-            cls.route_base = '/'
+            route_base_s = route_base.strip('/')
+            cls.route_base = '/%s/' % route_base_s
+            if prefix != route_base_s:
+                prefix = '%s.%s' % (prefix, route_base_s)
+
         if debug:
             cls.debug = debug
 
@@ -76,7 +80,7 @@ class ClassyView(object):
             config.add_route(route_name, url)
             config.add_view(cls, attr=name, route_name=route_name, **options)
             if cls.debug:
-                print("%s => '%s'" % (url, route_name))
+                log.debug("%s => '%s'" % (url, route_name))
 
     @classmethod
     def build_url(cls, url=''):
