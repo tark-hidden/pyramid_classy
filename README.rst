@@ -2,14 +2,12 @@ Pyramid-Classy
 ==============
 Translation and bug fix in progress.
 
-I like Flask. Almost all of my projects are just a combination of Flask, Flask-Classy and Flask-Admin.
-But now I have decided to try my hand at Pyramid.
-
 Pyramid-Classy is an extension that allows implementing several commonly used features.
-The main idea was taken from the Flask-Classy written by Freedom Dumlao, god bless him.
+The idea was taken from the Flask-Classy written by Freedom Dumlao.
 
-For example, Pyramid-Classy will automatically generate routes based on the methods in your views,
-at the same time providing a simple way to override those routes using Pyramid's familiar decorator
+Pyramid-Classy will automatically generate routes based on the methods
+in your views, at the same time providing a simple way to override those routes
+using Pyramid's familiar decorator.
 
 Installation
 ------------
@@ -22,6 +20,7 @@ or::
 
     $ easy_install pyramid-classy
 
+
 Let's see how it works
 ----------------------
 
@@ -29,7 +28,6 @@ Let's see how it works
 
     import random
     from pyramid.config import Configurator
-    from pyramid.response import Response
     from pyramid_classy import ClassyView, route
 
 
@@ -40,10 +38,10 @@ Let's see how it works
         "Fourth quote",
     ]
 
-    @view_defaults(renderer='project:/templates/single.pt')
+    @view_defaults(renderer='/single.jinja2')
     class IndexView(ClassyView):
-        @route('/')
-        def index(self, renderer='project:/templates/index.pt'):  # /
+        @route('/', renderer='/index.jinja2')
+        def index(self):  # /
             return dict(quotes=quotes)
 
         def random(self):  # /random
@@ -57,24 +55,45 @@ Let's see how it works
             return dict(quote=quote)
 
 
-    class SecondView(ClassyView):
-        def index(self):  # /second/
-            return Response('Second View index')
+    class UserView(ClassyView):
+        @route('/')
+        def index(self):  # /user/
+            return HTTPNotFound()
 
-        def random(self):  # /second/random
-            return Response(random.choice(quotes))
+        @route('/login', renderer='/user/login.jinja2')
+        def login(self):  # /user/login
+            request = self.request
+            if request.method == 'POST':
+                return ...
+            return {}
+
+        @route('/register', renderer='/user/register.jinja2')
+        def register(self):  # /user/register
+            request = self.request
+            if request.method == 'POST':
+                return ...
+            return {}
 
 
     def main(global_config, **settings):
         config = Configurator(settings=settings)
 
-        IndexView.register(config, debug=True)
-        SecondView.register(config)
+        IndexView.register(config)
+        UserView.register(config)
+
+        """ Instead of something like:
+
+        config.add_route('index', '/')
+        config.add_route('random', '/random')
+        config.add_route('get_1', '/{id:\d+}')
+        config.add_route('get_2', '/quote-{id:\d+}')
+        config.add_route('user', '/user')
+        config.add_route('user_login', '/user/login')
+        config.add_route('user_register', '/user/register')
+        config.scan()
+        """
 
         return config.make_wsgi_app()
-
-
-Amazing, isn't it? Write less, do more.
 
 
 Customizing the Route Base
@@ -139,10 +158,11 @@ route_name would be index.get_1 and index.get_0
 Important notes
 ---------------
 
-Classnames IndexView or Index will always use / as route_base.
-Method named index(self, request) will always use /<class_name>/ for route_path.
+It was written in Python 3.3 (and checked with Python 2.7) for Pyramid 1.7.3.
 
-Classnames will always use /<class_name>/ as route_base if you don't define route_base in class.
+Classnames IndexView or Index will always use / as route_base.
+
+Classnames will always use /<class_name>/ as route_base if you don't define route_base in class or the class is not inherit other class.
 Methods without decorators will use /<class_name>/<method_name> for route_path.
 
 The route decorator takes exactly the same parameters as Pyramid's add_route,
@@ -162,7 +182,7 @@ serve a specified URL even without route decorator.
             return something
 
 For avoiding this you need to define a function with name starting with underscore _.
-Sure enough, you cannot handle URLs with name starting with underscore. Sorry for that.
+Yes, you cannot handle URLs with name starting with underscore. Sorry for that.
 
 .. code-block:: python
 
@@ -173,79 +193,68 @@ Sure enough, you cannot handle URLs with name starting with underscore. Sorry fo
             return something
 
 
-Last words
-----------
-
-Ah. I have read the article http://me.veekun.com/blog/2011/07/14/pyramid-traversal-almost-useful/
+Known issues
+------------
 
 .. code-block:: python
 
-    config.add_route('cats.list', '/cats')
-    config.add_route('cats.view', '/cats/{id:\d+}', pregenerator=make_cat_url)
-    config.add_route('cats.owners', '/cats/{id:\d+}/owners', pregenerator=make_cat_url)
-    config.add_route('cats.shots', '/cats/{id:\d+}/shots', pregenerator=make_cat_url)
-    config.add_route('cats.youtubes', '/cats/{id:\d+}/youtubes', pregenerator=make_cat_url)
-    config.add_route('cats.hurpdurp', '/cats/{id:\d+}/hurpdurp', pregenerator=make_cat_url)
-    config.add_route('dogs.view', '/dogs/{id:\d+}', pregenerator=make_dog_url)
-    config.add_route('dogs.owners', '/dogs/{id:\d+}/owners', pregenerator=make_dog_url)
-    config.add_route('dogs.shots', '/dogs/{id:\d+}/shots', pregenerator=make_dog_url)
-    config.add_route('dogs.youtubes', '/dogs/{id:\d+}/youtubes', pregenerator=make_dog_url)
-    config.add_route('dogs.hurpdurp', '/dogs/{id:\d+}/hurpdurp', pregenerator=make_dog_url)
+    class AnimalView(ClassyView):
+        @route('/', renderer='string')
+        def index(self):
+            return 'Animal'
 
-This is really sad. What about this?
+        @route('/add', renderer='string')
+        def add(self):
+            return 'UI for appending some species'
+
+    class DogView(AnimalView):
+        @route('/', renderer='string')
+        def index(self):
+            return 'Dog inherit animal'
+
+
+    AnimalView.register(config)
+    DogView.register(config)
+
+
+Because of AnimalView has a self route_base after register and DogView is
+inheritance of AnimalView, then DogView route_base will be defined as
+'/animal' without overriding. Be careful.
+
+
+Pitfalls
+--------
 
 .. code-block:: python
 
-    class PetView(ClassyView):
-        def __init__(self, request):
-            super(PetView, self).__init__(request)
-            self.pet_class = request.path.split('/')[1]
+    class AboutUsView(ClassyView)
+        route_base = '/about'
 
-        @route('/', renderer='...')
-        def list(self):  # /
-            pet_class = self.pet_class
-            return ...
+        @route('/')
+        def index(self):
+            return HTTPNotFound()
 
-        @route('/{id:\d+}', renderer='...')
-        def view(self):  # /232
-            pet_class = self.pet_class
-            return ...
-
-        @route('/{id:\d+}/owners', renderer='...')
-        def owners(self):  # /232/owners
-            pet_class = self.pet_class
-            return ...
-
-        @route('/{id:\d+}/shots', renderer='...')
-        def shots(self):  # /232/shots
-            pet_class = self.pet_class
-            return ...
-
-        @route('/{id:\d+}/youtubes', renderer='...')
-        def youtubes(self):  # /232/youtubes
-            pet_class = self.pet_class
-            return ...
-
-        @route('/{id:\d+}/hurpdurp', renderer='...')
-        def hurpdurp(self):  # /232/hurpdurp
-            pet_class = self.pet_class
-            return ...
-
-    ...
-
-    def main(global_config, **settings):
-        config = Configurator(settings=settings)
-
-        PetView.register(config, '/cats')
-        PetView.register(config, '/dogs')
-
-        return config.make_wsgi_app()
+        @route('/company', ...)
+        def company(self):
+            return {}
 
 
-You're welcome, bro.
+Here is route_name values will depends on original class name; first one will be
+'aboutus.index' which will handle '/about' URL, and second one will
+be 'aboutus.company' -> '/about/company' URL.
+
+Well... debug=True is a good way to avoid it.
+
 
 Changelog
 *********
+
+0.4.4
+~~~~~
+
+* No more print if debug=True, now it depends on logging in a Pyramid config file.
+* Fixed too long route_name if class view inherit other class.
+
 
 0.4.2
 ~~~~~
